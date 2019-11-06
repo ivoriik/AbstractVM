@@ -1,17 +1,17 @@
-#ifndef INPUT_HANDLER_HPP
-#define INPUT_HANDLER_HPP
+#ifndef INPUTHANDLER_HPP
+#define INPUTHANDLER_HPP
 
 #include <iostream>
 #include <map>
 #include <string>
 #include <list>
+#include "VmStack.hpp"
 
 class InputHandler
 {
 private:
-	Parser									_parser;
-	VmStack									*_vmStack;
-	std::map<std::string, instructAddr>		_cmnd;
+	VmStack											*_vmStack;
+	std::map<std::string, void (VmStack::*)()>		_cmnd;
 	// std::map<std::string, eOperandType>		_types;
 
 public:

@@ -54,7 +54,7 @@ public:
 };
 
 #define HIGHER_PRECISION_TYPE(a, b) ((a.getPrecision()) >= (b.getPrecision()) ? (a.getType()) : (b.getType()))
-
+template<typename T>
 IOperand const *Operand<T>::operator+(IOperand const &rhs) const {
 		long double rhsVal = std::stold(rhs.toString());
 		eOperandType newType = HIGHER_PRECISION_TYPE(*this, rhs);

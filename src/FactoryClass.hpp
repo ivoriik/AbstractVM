@@ -1,5 +1,5 @@
-#ifndef FACTORY_CLASS_HPP
-#define FEACTORY_CLASS_HPP
+#ifndef FACTORYCLASS_HPP
+#define FACTORYCLASS_HPP
 
 #include "IOperand.hpp"
 #include <vector>
@@ -7,10 +7,9 @@
 class FactoryClass
 {
 private:
-	typedef IOperand const * (FactoryClass::*fnptr_t)(std::string const &) const;
-	static const fnptr_t _fnptr[MaxOperandTypes];
-	// typedef std::vector<IOperand const *(FactoryClass::*)(std::string const &value) const> fnptr_t;
-	// fnptr_t _fnptr;
+	// typedef IOperand const * (FactoryClass::*fnPtrCreateOp)(std::string const &s) const;
+	// static const fnPtrCreateOp _fnptr[MaxTypes];
+	static IOperand const *(FactoryClass::*_fnptr[MaxTypes])(std::string const &) const;
 
 	IOperand const *createInt8  (std::string const &value) const;
 	IOperand const *createInt16 (std::string const &value) const;
@@ -27,6 +26,6 @@ public:
 
 };
 
-static const FactoryClass factory;
+static const FactoryClass _factory;
 
 #endif

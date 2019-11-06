@@ -33,15 +33,24 @@ InputHandler InputHandler::&operator=(InputHandler const &oth) {
 }
 
 void InputHandler::readFile(char *fname) {
+    std::ifstream ifs;
+    std::string s;
+    std::list<std::string> content;
+    Parser prs;
 
-}
+    ifs.open(fileName);
+    if (!ifs.is_open()) {
+    	throw(FileErrException());
+    }
 
-void InputHandler::readStdin(void) {
-	std::string s;
+    while (std::getline(ifs, s)){
+        content.push_back(s);
+    }
+    ifs.close();
 
-	while(getline(std::cin, s) && s != ";;") {
-		try {
-			this->_parser.processLine(s);
+    while (content.size()) {
+    	try {
+			prs.processLine(s);
 		}
 		// catch (const BadValueException &e) {
 		// 	std::cerr << e.what() << std::endl; 
@@ -61,8 +70,40 @@ void InputHandler::readStdin(void) {
 		catch (const std::exception &e) {
 			std::cerr << e.what() << std::endl;
 		}
-		if (_match[CMD_ID] != "CMD_EXIT") {
-			this->calcExpression(_parser._match);
+		if (prs._match[CMD_ID] != CMD_EXIT) {
+			this->calcExpression(prs._match);
+		}
+    }
+}
+
+void InputHandler::readStdin(void) {
+	std::string s;
+	Parser prs;
+
+	while(getline(std::cin, s) && s != ";;") {
+		try {
+			prs.processLine(s);
+		}
+		// catch (const BadValueException &e) {
+		// 	std::cerr << e.what() << std::endl; 
+		// }
+		// catch (const UnknownTypeException &e) {
+		// 	std::cerr << e.what() << std::endl;
+		// }
+		// catch (const UnknownCommandException &e) {
+		// 	std::cerr << e.what() << std::endl;
+		// }
+		catch (const SyntaxErrException &e) {
+			std::cerr << e.what() << std::endl;
+		}
+		catch (const CommandAftExitException &e) {
+			std::cerr << e.what() << std::endl;
+		}
+		catch (const std::exception &e) {
+			std::cerr << e.what() << std::endl;
+		}
+		if (prs._match[CMD_ID] != CMD_EXIT) {
+			this->calcExpression(prs._match);
 		}
 	}
 }
@@ -93,5 +134,5 @@ void calcExpression(std::cmatch const &_match) {
     }
     catch (const std::exception& e) {
     	std::cerr << e.what() << std::endl; 
-    } 
+    }
 }

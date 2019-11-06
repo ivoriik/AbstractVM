@@ -1,8 +1,7 @@
 #ifndef VM_STACK_HPP
 #define VM_STACK_HPP
 
-#include "IOperand.hpp"
-#include "eOperandType.hpp"
+#include "Operand.hpp"
 #include "Exceptions.hpp"
 #include <sstream>
 #include "IterableStack.hpp"

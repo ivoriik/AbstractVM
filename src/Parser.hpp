@@ -10,6 +10,7 @@
 class Parser
 {
 private:
+    bool                    _isExit;
 	std::cmatch				_match;
 	const std::regex		_comment;
 	const std::regex		_cmd;
@@ -19,7 +20,6 @@ private:
  //    std::map<std::string, instructAddr>         _instructs;
  //    std::map<std::string, instructAddrWithArgs> _instructsWithArgs;
  //    std::map<std::string, eOperandType>         _types;
-    bool                                        _isExit;
 public:
 	Parser(void);
 	~Parser(void);
@@ -28,7 +28,7 @@ public:
 
 	void processLine(std::string s);
 
-	// void checkExit();
+	void isExit();
 	// void executeTokens(Token command);
  //    void executeTokens(Token command, Token type, Token value);
 	

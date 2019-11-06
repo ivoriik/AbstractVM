@@ -1,10 +1,6 @@
 #include "Parser.hpp"
 
-Parser(void) {
-
-
-     this->_isExit = false;
-}
+Parser(void): _isExit(false) {}
 
 ~Parser(void) {
 	try {
@@ -47,7 +43,7 @@ void processLine(std::string s) {
 		throw Exceptions::SyntaxErrException();
 }
 
-void Parser::checkExit() {
-    if (!this->_exitBool)
-        throw MissingExitException();
+void Parser::isExit() {
+    if (!this->_isExit)
+        throw NoExitException();
 }

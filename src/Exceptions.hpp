@@ -46,7 +46,7 @@ namespace Exceptions
 	    const char *what() const throw();
 	};
 
-	class NoExitCmndException: public std::exception
+	class NoExitException: public std::exception
 	{
 	public:
 		const char	*what(void) const throw();
