@@ -47,3 +47,13 @@ void Parser::isExit() {
     if (!this->_isExit)
         throw NoExitException();
 }
+
+std::string &Parser::getCmnd() {
+	return _match[CMD_ID];
+}
+
+IOperand *Parser::getValue() {
+	if (_match.size() == VAL_ID)
+		return _factory.createOperand(_match[TYP_ID], _match[VAL_ID]);
+	return NULL;
+}

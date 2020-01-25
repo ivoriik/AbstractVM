@@ -4,6 +4,8 @@
 #include "IOperand.hpp"
 #include "FactoryClass.hpp"
 #include "Exceptions.hpp"
+#include <cmath>
+
 
 template<typename T>
 class Operand : public IOperand
@@ -50,10 +52,12 @@ public:
 	IOperand const *operator*(IOperand const &rhs) const;
 	IOperand const *operator/(IOperand const &rhs) const;
 	IOperand const *operator%(IOperand const &rhs) const;
-
+	bool operator==(IOperand const &rhs) const;
+	bool operator>(IOperand const &rhs) const;
+	bool operator<(IOperand const &rhs) const;
 };
 
-#define HIGHER_PRECISION_TYPE(a, b) ((a.getPrecision()) >= (b.getPrecision()) ? (a.getType()) : (b.getType()))
+#define HIGHER_PRECISION_TYPE(a, b) ((a).getPrecision() >= (b).getPrecision() ? (a).getType() : (b).getType())
 template<typename T>
 IOperand const *Operand<T>::operator+(IOperand const &rhs) const {
 		long double rhsVal = std::stold(rhs.toString());
@@ -63,6 +67,7 @@ IOperand const *Operand<T>::operator+(IOperand const &rhs) const {
 				+ rhsVal)));
 }
 
+template<typename T>
 IOperand const *Operand<T>::operator-(IOperand const &rhs) const {
 		long double rhsVal = std::stold(rhs.toString());
 		eOperandType newType = HIGHER_PRECISION_TYPE(*this, rhs);
@@ -71,6 +76,7 @@ IOperand const *Operand<T>::operator-(IOperand const &rhs) const {
 				- rhsVal)));
 }
 
+template<typename T>
 IOperand const *Operand<T>::operator*(IOperand const &rhs) const {
 		long double rhsVal = std::stold(rhs.toString());
 		eOperandType newType = HIGHER_PRECISION_TYPE(*this, rhs);
@@ -79,6 +85,7 @@ IOperand const *Operand<T>::operator*(IOperand const &rhs) const {
 				* rhsVal)));
 }
 
+template<typename T>
 IOperand const *Operand<T>::operator/(IOperand const &rhs) const {
 		long double rhsVal = std::stold(rhs.toString());
 		if (rhsVal == 0)
@@ -90,6 +97,7 @@ IOperand const *Operand<T>::operator/(IOperand const &rhs) const {
 				/ rhsVal)));
 }
 
+template<typename T>
 IOperand const *Operand<T>::operator%(IOperand const &rhs) const {
 		long double rhsVal = std::stold(rhs.toString());
 		if (rhsVal == 0)
@@ -97,32 +105,32 @@ IOperand const *Operand<T>::operator%(IOperand const &rhs) const {
 
 		eOperandType newType = HIGHER_PRECISION_TYPE(*this, rhs);
 
-		return (_factory.createOperand(newType, std::to_string(static_cast<long double>(_value)
-				% rhsVal)));
+		return (_factory.createOperand(newType, std::to_string(fmod(static_cast<long double>(_value),
+				rhsVal))));
 }
 
 // ------------------------- Comparison Operators -------------------------
 // CHECK + ADD NEW
 
+template<typename T>
 bool	Operand<T>::operator==(IOperand const &rhs) const {
 		long double rhsVal = std::stold(rhs.toString());
-		eOperandType newType = HIGHER_PRECISION_TYPE(*this, rhs);
 
 		return static_cast<long double>(_value) == rhsVal;
 }
 
+template<typename T>
 bool	Operand<T>::operator>(IOperand const &rhs) const {
 		long double rhsVal = std::stold(rhs.toString());
-		eOperandType newType = HIGHER_PRECISION_TYPE(*this, rhs);
 
-		return static_cast<long double>(_value) > std::stod(rhs.toString());
+		return static_cast<long double>(_value) > rhsVal;
 }
 
+template<typename T>
 bool	Operand<T>::operator<(IOperand const &rhs) const {
 		long double rhsVal = std::stold(rhs.toString());
-		eOperandType newType = HIGHER_PRECISION_TYPE(*this, rhs);
 
-		return static_cast<long double>(_value) < std::stod(rhs.toString());
+		return static_cast<long double>(_value) < rhsVal;
 }
 
-
+#endif

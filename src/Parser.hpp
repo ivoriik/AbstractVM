@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stack>
 #include <regex>
-#include "Ioperadn.hpp"
+#include "IOperand.hpp"
 
 class Parser
 {
@@ -27,6 +27,8 @@ public:
 	Parser &operator=(Parser const &oth);
 
 	void processLine(std::string s);
+	std::string &getCmnd();
+	IOperand *getValue();
 
 	void isExit();
 	// void executeTokens(Token command);

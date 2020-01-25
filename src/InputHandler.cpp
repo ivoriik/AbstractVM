@@ -1,4 +1,6 @@
 #include "InputHandler.hpp"
+#include "Exceptions.hpp"
+#include "Parser.hpp"
 
 InputHandler::InputHandler(void) {
 	this->_vmStack = new VmStack();
@@ -15,8 +17,8 @@ InputHandler::InputHandler(void) {
 	this->_cmnd["mul"] = &VmStack::mul;
 	this->_cmnd["div"] = &VmStack::div;
 	this->_cmnd["mod"] = &VmStack::mod;
-	this->_cmnd["push"] = &VmStack::push;
-	this->_cmnd["assert"] = &VmStack::assert;
+	this->_cmndWithArg["push"] = &VmStack::push;
+	this->_cmndWithArg["assert"] = &VmStack::assert;
 }
 
 InputHandler::~InputHandler(void) {}
@@ -25,11 +27,11 @@ InputHandler::InputHandler(InputHandler const &oth) {
 	*this = oth;
 }
 
-InputHandler InputHandler::&operator=(InputHandler const &oth) {
+InputHandler &InputHandler::operator=(InputHandler const &oth) {
 	if (this != &oth) {
 		*this = oth;
 	}
-	return oth;
+	return *this;
 }
 
 void InputHandler::readFile(char *fname) {
@@ -38,9 +40,9 @@ void InputHandler::readFile(char *fname) {
     std::list<std::string> content;
     Parser prs;
 
-    ifs.open(fileName);
+    ifs.open(fname);
     if (!ifs.is_open()) {
-    	throw(FileErrException());
+    	throw(Exceptions::FileErrException());
     }
 
     while (std::getline(ifs, s)){
@@ -61,10 +63,10 @@ void InputHandler::readFile(char *fname) {
 		// catch (const UnknownCommandException &e) {
 		// 	std::cerr << e.what() << std::endl;
 		// }
-		catch (const SyntaxErrException &e) {
+		catch (const Exceptions::SyntaxErrException &e) {
 			std::cerr << e.what() << std::endl;
 		}
-		catch (const CommandAftExitException &e) {
+		catch (const Exceptions::CmndAftExitException &e) {
 			std::cerr << e.what() << std::endl;
 		}
 		catch (const std::exception &e) {
@@ -93,43 +95,83 @@ void InputHandler::readStdin(void) {
 		// catch (const UnknownCommandException &e) {
 		// 	std::cerr << e.what() << std::endl;
 		// }
-		catch (const SyntaxErrException &e) {
+		catch (const Exceptions::SyntaxErrException &e) {
 			std::cerr << e.what() << std::endl;
 		}
-		catch (const CommandAftExitException &e) {
+		catch (const Exceptions::CommandAftExitException &e) {
 			std::cerr << e.what() << std::endl;
 		}
 		catch (const std::exception &e) {
 			std::cerr << e.what() << std::endl;
 		}
-		if (prs._match[CMD_ID] != CMD_EXIT) {
-			this->calcExpression(prs._match);
+		if (prs.getCmnd() != CMD_EXIT) {
+			this->calcExpression(prs.getCmnd());
 		}
 	}
 }
 
 
-void calcExpression(std::cmatch const &_match) {
-	if (_match[CMD_ID] == "CMD_PUSH" || _match[CMD_ID] == "CMD_ASSERT") {
-        IOperand const *op = _factory.createOperand(_match[TYP_ID], _match[VAL_ID]);
-     	try {
-        	_abstractStack->*(this->_cmnd[command.getContent()])(op);
-     	}
-	} else {
-		try {
-			this->_vmStack->*(_match[CMD_ID]);
-		}
-	}
-    catch (const EmptyStackException& e) {
+// void calcExpression(std::cmatch const &_match) {
+// 	if (_match[CMD_ID] == "CMD_PUSH" || _match[CMD_ID] == "CMD_ASSERT") {
+//         IOperand const *op = _factory.createOperand(_match[TYP_ID], _match[VAL_ID]);
+//      	try {
+//         	_abstractStack->*(this->_cmnd[command.getContent()])(op);
+//      	}
+// 	} else {
+// 		try {
+// 			this->_vmStack->*(_match[CMD_ID]);
+// 		}
+// 	}
+//     catch (const Exceptions::EmptyStackException& e) {
+//     	std::cerr << e.what() << std::endl; 
+//     }
+//     catch (const Exceptions::UnderFlowException& e) {
+//     	std::cerr << e.what() << std::endl; 
+//     }
+//     catch (const Exceptions::OverFlowException& e) {
+//     	std::cerr << e.what() << std::endl; 
+//     }
+//     catch (const Exceptions::AssertFailException& e) {
+//     	std::cerr << e.what() << std::endl; 
+//     }
+//     catch (const std::exception& e) {
+//     	std::cerr << e.what() << std::endl; 
+//     }
+// }
+
+void calcExpression(std::string const &cmnd) {
+	try {
+        	this->_vmStack->*_cmnd[cmnd]();
+    } catch (const Exceptions::EmptyStackException& e) {
     	std::cerr << e.what() << std::endl; 
     }
-    catch (const UnderFlowException& e) {
+    catch (const Exceptions::UnderFlowException& e) {
     	std::cerr << e.what() << std::endl; 
     }
-    catch (const OverFlowException& e) {
+    catch (const Exceptions::OverFlowException& e) {
     	std::cerr << e.what() << std::endl; 
     }
-    catch (const AssertFailException& e) {
+    catch (const Exceptions::AssertFailException& e) {
+    	std::cerr << e.what() << std::endl; 
+    }
+    catch (const std::exception& e) {
+    	std::cerr << e.what() << std::endl; 
+    }
+}
+
+void calcExpression(std::string const &cmnd, IOperand const *rhs) {
+	try {
+        	this->_vmStack->*_cmnd[cmnd](rhs);
+    } catch (const Exceptions::EmptyStackException& e) {
+    	std::cerr << e.what() << std::endl; 
+    }
+    catch (const Exceptions::UnderFlowException& e) {
+    	std::cerr << e.what() << std::endl; 
+    }
+    catch (const Exceptions::OverFlowException& e) {
+    	std::cerr << e.what() << std::endl; 
+    }
+    catch (const Exceptions::AssertFailException& e) {
     	std::cerr << e.what() << std::endl; 
     }
     catch (const std::exception& e) {

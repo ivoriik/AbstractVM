@@ -112,5 +112,6 @@ namespace Exceptions
 	public:
 		const char	*what(void) const throw();
 	};
+}
 
 #endif
