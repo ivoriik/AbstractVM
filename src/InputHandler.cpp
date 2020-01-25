@@ -125,13 +125,13 @@ void InputHandler::readStdin(void) {
 //     catch (const Exceptions::EmptyStackException& e) {
 //     	std::cerr << e.what() << std::endl; 
 //     }
-//     catch (const Exceptions::UnderFlowException& e) {
+//     catch (const Exceptions::UnderflowException& e) {
 //     	std::cerr << e.what() << std::endl; 
 //     }
-//     catch (const Exceptions::OverFlowException& e) {
+//     catch (const Exceptions::OverflowException& e) {
 //     	std::cerr << e.what() << std::endl; 
 //     }
-//     catch (const Exceptions::AssertFailException& e) {
+//     catch (const Exceptions::AssertException& e) {
 //     	std::cerr << e.what() << std::endl; 
 //     }
 //     catch (const std::exception& e) {
@@ -145,13 +145,13 @@ void calcExpression(std::string const &cmnd) {
     } catch (const Exceptions::EmptyStackException& e) {
     	std::cerr << e.what() << std::endl; 
     }
-    catch (const Exceptions::UnderFlowException& e) {
+    catch (const Exceptions::UnderflowException& e) {
     	std::cerr << e.what() << std::endl; 
     }
-    catch (const Exceptions::OverFlowException& e) {
+    catch (const Exceptions::OverflowException& e) {
     	std::cerr << e.what() << std::endl; 
     }
-    catch (const Exceptions::AssertFailException& e) {
+    catch (const Exceptions::AssertException& e) {
     	std::cerr << e.what() << std::endl; 
     }
     catch (const std::exception& e) {
@@ -165,13 +165,13 @@ void calcExpression(std::string const &cmnd, IOperand const *rhs) {
     } catch (const Exceptions::EmptyStackException& e) {
     	std::cerr << e.what() << std::endl; 
     }
-    catch (const Exceptions::UnderFlowException& e) {
+    catch (const Exceptions::UnderflowException& e) {
     	std::cerr << e.what() << std::endl; 
     }
-    catch (const Exceptions::OverFlowException& e) {
+    catch (const Exceptions::OverflowException& e) {
     	std::cerr << e.what() << std::endl; 
     }
-    catch (const Exceptions::AssertFailException& e) {
+    catch (const Exceptions::AssertException& e) {
     	std::cerr << e.what() << std::endl; 
     }
     catch (const std::exception& e) {

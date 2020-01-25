@@ -22,19 +22,19 @@ namespace Exceptions
 		const char	*what(void) const throw();
 	};
 	
-	class NotValidCmndException : public std::exception
+	class BadCmndException : public std::exception
 	{
 	public :
-	    char *what() const throw();
+	    const char *what() const throw();
 	};
 	
-	class NotValidTypeException : public std::exception
+	class BadTypeException : public std::exception
 	{
 	public:
 		const char *what() const throw();
 	};
 	
-	class BadValueException : public std::exception
+	class BadValException : public std::exception
 	{
 	public :
 	    const char *what() const throw();

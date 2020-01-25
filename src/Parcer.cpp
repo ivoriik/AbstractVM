@@ -1,8 +1,8 @@
 #include "Parser.hpp"
 
-Parser(void): _isExit(false) {}
+Parser::Parser(void): _isExit(false) {}
 
-~Parser(void) {
+Parser::~Parser(void) {
 	try {
 		checkExit()
 	}
@@ -12,11 +12,11 @@ Parser(void): _isExit(false) {}
 	delete this->_vmStack;
 }
 
-Parser(Parser const &oth) {
+Parser::Parser(Parser const &oth) {
 	*this = oth;
 }
 
-Parser &operator=(Parser const &oth) {
+Parser &Parser::operator=(Parser const &oth) {
 	if (this != &oth) {
 		delete this->_vmStack;
 		*this = oth;
@@ -24,7 +24,7 @@ Parser &operator=(Parser const &oth) {
 	return *this;
 }
 
-void processLine(std::string s) {
+void Parser::processLine(std::string s) {
 	if (s.empty() || std::all_of(s.begin(), s.end(), isspace) ||
 		(std::regex_match(s.c_str(), _comment))
 		return ;

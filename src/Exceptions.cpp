@@ -10,7 +10,7 @@ const char	*Exceptions::SyntaxErrException::what(void) const throw() {
 	return "Error: Syntax Error";
 }
 
-const char	*Exceptions::NoExitCommandException::what(void) const throw() {
+const char	*Exceptions::NoExitException::what(void) const throw() {
 	return "Error: No \"exit\" command";
 }
 
@@ -22,7 +22,7 @@ const char	*Exceptions::UnderflowException::what(void) const throw() {
 	return "Error: ";
 }
 
-const char	*Exceptions::NotEnoughArgumentsException::what(void) const throw() {
+const char	*Exceptions::NotEnoughArgsException::what(void) const throw() {
 	return "Error: Not enough arguments for operation";
 }
 
@@ -34,11 +34,11 @@ const char	*Exceptions::EmptyStackException::what(void) const throw() {
 	return "Error: ";
 }
 
-const char	*Exceptions::DivisionByZeroException::what(void) const throw() {
+const char	*Exceptions::DivByZeroException::what(void) const throw() {
 	return "Error: Division by zero!";
 }
 
-const char	*Exceptions::PrintCommandException::what(void) const throw() {
+const char	*Exceptions::PrintCmndException::what(void) const throw() {
 	return "Error: Invalid type for print";
 }
 
@@ -50,22 +50,22 @@ const char	*Exceptions::LessException::what(void) const throw() {
 	return "Error: ";
 }
 
-const char *Exceptions::ConversionException::what(void) const throw() {
+const char *Exceptions::ConversionErrException::what(void) const throw() {
 	return "Error: Stream conversion failed";
 }
 
-const char *BadCmndException::what() const throw() {
+const char *Exceptions::BadCmndException::what() const throw() {
 	return "Error: Invalid command";
 }
 	
-const char *BadTypeException::what() const throw() {
+const char *Exceptions::BadTypeException::what() const throw() {
 	return "Error: Invalid argument type";
 }
 	
-const char *BadValueException::what() const throw() {
+const char *Exceptions::BadValException::what() const throw() {
 	return "Error: Invalid value";
 }
 
-const char *CmndAftExitException::what() const throw() {
+const char *Exceptions::CmndAftExitException::what() const throw() {
 	return "Error: \"exit\" is not the last command";
 }

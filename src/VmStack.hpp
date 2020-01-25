@@ -18,6 +18,8 @@
 #define CMD_PRINT "print"
 #define CMD_EXIT "exit"
 
+// #define CMD_ID 
+
 // #define CM_MORE "more"
 // #define CM_LESS "less"
 // #define CM_MAX "max"
@@ -26,7 +28,10 @@
 class VmStack
 {
 private:
-	std::stack<IOperand const *> _stack{};
+/*
+** REPLAYS TO DIFFERENT STACK
+*/
+	IterableStack<IOperand const *> _stack;
 	std::stringstream _resStr;
 public:
 	VmStack();
