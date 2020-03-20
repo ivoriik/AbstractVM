@@ -1,0 +1,6 @@
+push int8(5)
+push int8(3)
+sub
+assert int8(2)
+dump
+exit

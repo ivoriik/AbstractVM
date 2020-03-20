@@ -1,0 +1,6 @@
+push int32(75)
+push float(44.55)
+mul
+assert float(3341.25)
+dump;should output 3341.25 and not 3300
+exit

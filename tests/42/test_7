@@ -1,0 +1,4 @@
+push int32(42)
+add
+exit
+;si tu lis ceci, tu es un correcteur attentif. Bien ouej!
