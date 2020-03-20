@@ -1,71 +1,121 @@
 #include "Exceptions.hpp"
 
-// unsigned int Exceptions::line = 1;
+size_t Exceptions::line = 0;
 
-const char	*Exceptions::FileErrException::what(void) const throw() {
-	return "Error: Impossible to open file";
+Exceptions::FileErrException::FileErrException() {
+	this->_msg = "Error: Impossible to open file!";
+}
+const char	*Exceptions::FileErrException::what() const throw() {
+	return this->_msg.c_str();
 }
 
-const char	*Exceptions::SyntaxErrException::what(void) const throw() {
-	return "Error: Syntax Error";
+Exceptions::SyntaxErrException::SyntaxErrException(size_t ln, std::string const &s): _line(std::to_string(ln)), _s(s) {
+	this->_msg = "Line " + _line + ": " + _s + "\nError: Syntax Error!";
+}
+const char	*Exceptions::SyntaxErrException::what() const throw() {
+	return this->_msg.c_str();
 }
 
-const char	*Exceptions::NoExitException::what(void) const throw() {
-	return "Error: No \"exit\" command";
+Exceptions::NoExitException::NoExitException(size_t ln): _line(std::to_string(ln)) {
+	this->_msg = "Line " + _line + ". Error: No \"exit\" command!";
+}
+const char	*Exceptions::NoExitException::what() const throw() {
+	return this->_msg.c_str();
 }
 
-const char	*Exceptions::OverflowException::what(void) const throw() {
-	return "Error: ";
+Exceptions::OverflowException::OverflowException(): std::out_of_range("Error: Overflow on a value")
+{}
+
+Exceptions::UnderflowException::UnderflowException(): std::out_of_range("Error: Underflow on a value")
+{}
+
+Exceptions::NotEnoughArgsException::NotEnoughArgsException() {
+	this->_msg = "Error: Not enough arguments for operation!";
+}
+const char	*Exceptions::NotEnoughArgsException::what() const throw() {
+	return this->_msg.c_str();
 }
 
-const char	*Exceptions::UnderflowException::what(void) const throw() {
-	return "Error: ";
+Exceptions::AssertException::AssertException() {
+	this->_msg = "Assertion failed!";
+}
+const char	*Exceptions::AssertException::what() const throw() {
+	return this->_msg.c_str();
 }
 
-const char	*Exceptions::NotEnoughArgsException::what(void) const throw() {
-	return "Error: Not enough arguments for operation";
+Exceptions::EmptyStackException::EmptyStackException() {
+	this->_msg = "Error: Instruction on an empty stack!";
+}
+const char	*Exceptions::EmptyStackException::what() const throw() {
+	return this->_msg.c_str();
 }
 
-const char	*Exceptions::AssertException::what(void) const throw() {
-	return "Error: ";
+Exceptions::DivByZeroException::DivByZeroException() {
+	this->_msg = "Error: Division by zero!";
+}
+const char	*Exceptions::DivByZeroException::what() const throw() {
+	return this->_msg.c_str();
 }
 
-const char	*Exceptions::EmptyStackException::what(void) const throw() {
-	return "Error: ";
+Exceptions::PrintCmndException::PrintCmndException() {
+	this->_msg = "Error: Type is not printable!";
+}
+const char	*Exceptions::PrintCmndException::what() const throw() {
+	return this->_msg.c_str();
 }
 
-const char	*Exceptions::DivByZeroException::what(void) const throw() {
-	return "Error: Division by zero!";
+Exceptions::MoreAssertException::MoreAssertException() {
+	this->_msg = "More assertion failed!";
+}
+const char	*Exceptions::MoreAssertException::what() const throw() {
+	return this->_msg.c_str();
 }
 
-const char	*Exceptions::PrintCmndException::what(void) const throw() {
-	return "Error: Invalid type for print";
+Exceptions::LessAssertException::LessAssertException() {
+	this->_msg = "Less assertion failed!";
+}
+const char	*Exceptions::LessAssertException::what() const throw() {
+	return this->_msg.c_str();
 }
 
-const char	*Exceptions::MoreException::what(void) const throw() {
-	return "Error: ";
+Exceptions::ConversionErrException::ConversionErrException() {
+	this->_msg = "Error: Stream conversion failed!";
+}
+const char *Exceptions::ConversionErrException::what() const throw() {
+	return this->_msg.c_str();
 }
 
-const char	*Exceptions::LessException::what(void) const throw() {
-	return "Error: ";
+Exceptions::BadCmndException::BadCmndException(size_t ln, std::string const &s): _line(std::to_string(ln)), _s(s) {
+	this->_msg = "Line " + _line + ": " + _s + "\nError: Instruction is unknown!";
 }
-
-const char *Exceptions::ConversionErrException::what(void) const throw() {
-	return "Error: Stream conversion failed";
-}
-
 const char *Exceptions::BadCmndException::what() const throw() {
-	return "Error: Invalid command";
-}
-	
-const char *Exceptions::BadTypeException::what() const throw() {
-	return "Error: Invalid argument type";
-}
-	
-const char *Exceptions::BadValException::what() const throw() {
-	return "Error: Invalid value";
+	return this->_msg.c_str();
 }
 
+Exceptions::BadTypeException::BadTypeException(size_t ln, std::string const &s): _line(std::to_string(ln)), _s(s) {
+	this->_msg = "Line " + _line + ": " + _s + "\nError: Invalid argument type!";
+}
+const char *Exceptions::BadTypeException::what() const throw() {
+	return this->_msg.c_str();
+}
+
+Exceptions::BadValException::BadValException(size_t ln, std::string const &s): _line(std::to_string(ln)), _s(s) {
+	this->_msg = "Line " + _line + ": " + _s + "\nError: Invalid value!";
+}
+const char *Exceptions::BadValException::what() const throw() {
+	return this->_msg.c_str();
+}
+
+Exceptions::CmndAftExitException::CmndAftExitException(size_t ln): _line(std::to_string(ln)) {
+	this->_msg = "Line " + _line + "\nError: \"exit\" is not the last command!";
+}
 const char *Exceptions::CmndAftExitException::what() const throw() {
-	return "Error: \"exit\" is not the last command";
+	return this->_msg.c_str();
+}
+
+Exceptions::NonIntModException::NonIntModException() {
+	this->_msg = "Invalid operands of non integer types to binary operator %!";
+}
+const char *Exceptions::NonIntModException::what() const throw() {
+	return this->_msg.c_str();
 }

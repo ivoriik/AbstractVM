@@ -1,30 +1,39 @@
-CXX=clang++
-CXXFLAGS=-I$(INCLUDE_DIR) -Wall -Wextra -Werror -O2 -std=c++11
+NAME		=	abstract-vm
+FLAGS		= 	-Wall -Werror -Wextra
+GCC	        =	g++ -std=c++11
 
-SRCS=src/*.cpp
-OBJS=$(SRCS:.cpp=.o)
+INC_DIR		=	inc/
+SRC_DIR		=	src/
+OBJ_DIR		= 	obj/
 
-INCLUDE_DIR=./
+SRC 		=	Exceptions.cpp \
+                FactoryClass.cpp \
+                InputHandler.cpp \
+                main.cpp \
+                Parcer.cpp \
+                VmStack.cpp \
+                Token.cpp \
+                Lexer.cpp
 
-EXEC=abstractVM
+OBJ 		= 	$(addprefix $(OBJ_DIR), $(SRC:.cpp=.o))
 
-all: $(EXEC)
+INC 		= 	-I $(INC_DIR)
 
-$(EXEC): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $(OBJS)
-	@echo Program linked
+all: obj $(NAME)
 
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+obj:
+	@mkdir -p $(OBJ_DIR)
+
+$(NAME): $(OBJ)
+	@$(GCC) $(INC) -o $(NAME) $(OBJ)
+
+$(OBJ_DIR)%.o: $(SRC_DIR)%.cpp
+	@$(GCC) $(INC) $(FLAGS) -c -o $@ $<
 
 clean:
-	rm -rf $(OBJS)
-	@echo "Objects files deleted"
+	@rm -rf $(OBJ_DIR)
 
 fclean: clean
-	rm -rf $(EXEC)
-	@echo "Program deleted"
+	@rm -f $(NAME)
 
 re: fclean all
-
-.PHONY: clean fclean re all

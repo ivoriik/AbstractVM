@@ -4,106 +4,65 @@
 #include <sstream>
 #include <float.h>
 
-FactoryClass::FactoryClass() {
-	// _fnptr = fnptr_t(MaxTypes);
-	_fnptr[Int8] = &FactoryClass::createInt8;
-	_fnptr[Int16] = &FactoryClass::createInt16;
-	_fnptr[Int32] = &FactoryClass::createInt32;
-	_fnptr[Float] = &FactoryClass::createFloat;
-	_fnptr[Double] = &FactoryClass::createDouble;
-}
-FactoryClass::~FactoryClass() {}
-FactoryClass::FactoryClass(FactoryClass const &oth) {
-	*this = oth;
-}
-
-FactoryClass &FactoryClass::operator=(FactoryClass const &oth) {
-	if (this != &oth)
-		*this = oth;
-	return *this;
-}
+IOperand const *(FactoryClass::*(FactoryClass::_fnptr[eOperandType::MaxTypes]))(std::string const &) const =
+{
+	&FactoryClass::createInt8,
+	&FactoryClass::createInt16,
+	&FactoryClass::createInt32,
+	&FactoryClass::createFloat,
+	&FactoryClass::createDouble
+};
 
 IOperand const *FactoryClass::createOperand(eOperandType type, std::string const &val) const {
-	/*Maybe I should add check for valid TYPE val*/
-	IOperand *op;
 
-	try {
-		op = (this->*_fnptr[type])(val);
-	} catch (const Exceptions::ConversionErrException &e) {
-		std::cerr << e.what() << std::endl;
-	} catch (const Exceptions::OverflowException &e) {
-		std::cerr << e.what() << std::endl;
-	} catch (const Exceptions::UnderflowException &e) {
-		std::cerr << e.what() << std::endl;
-	}
-	return op;
+	return (this->*_fnptr[type])(val);
 }
 
 IOperand const *FactoryClass::createInt8(std::string const &val) const {
-	int64_t num;
+	long double num = std::stold(val);
 
-	std::istringstream ss(val);
-	ss >> num;
-	if (ss.fail())
-		throw Exceptions::ConversionErrException();
 	if (num > INT8_MAX || num < INT8_MIN)
 		throw Exceptions::OverflowException();
 	else
-		return new Operand<int8_t>(static_cast<int8_t>(num), Int8, std::string(val));
+		return new Operand<int8_t>(static_cast<int8_t>(num), eOperandType::Int8);
 }
 
 IOperand const *FactoryClass::createInt16(std::string const &val) const {
-	int64_t num;
+	long double num = std::stold(val);
 
-	std::istringstream ss(val);
-	ss >> num;
-	if (ss.fail())
-		throw Exceptions::ConversionErrException();
 	if (num < INT16_MIN || num > INT16_MAX)
 		throw Exceptions::OverflowException();
 	else
-		return new Operand<int16_t>(static_cast<int16_t>(num), Int16, std::string(val));
+		return new Operand<int16_t>(static_cast<int16_t>(num), eOperandType::Int16);
 }
 
 IOperand const *FactoryClass::createInt32(std::string const &val) const {
-	int64_t num;
+	long double num = std::stold(val);
 
-	std::istringstream ss(val);
-	ss >> num;
-	if (ss.fail())
-		throw Exceptions::ConversionErrException();
 	if (num < INT32_MIN || num > INT32_MAX)
 		throw Exceptions::OverflowException();
 	else
-		return new Operand<int32_t>(static_cast<int32_t>(num), Int32, std::string(val));
+		return new Operand<int32_t>(static_cast<int32_t>(num), eOperandType::Int32);
 }
 
 IOperand const *FactoryClass::createFloat(std::string const &val) const {
-	long double num;
+	long double num = std::stold(val);
 
-	std::istringstream ss(val);
-	ss >> num;
-	if (ss.fail())
-		throw Exceptions::ConversionErrException();
 	if (num < -FLT_MAX || num > FLT_MAX)
 		throw Exceptions::OverflowException();
 	else if (num > 0 && num < FLT_MIN)
 		throw Exceptions::UnderflowException();
 	else
-		return new Operand<float>(static_cast<float>(num), Float, std::string(val));
+		return new Operand<float>(static_cast<float>(num), eOperandType::Float);
 }
 
 IOperand const *FactoryClass::createDouble(std::string const &val) const {
-	long double num;
+	long double num = std::stold(val);
 
-	std::istringstream ss(val);
-	ss >> num;
-	if (ss.fail())
-		throw Exceptions::ConversionErrException();
 	if (num < -DBL_MAX || num > DBL_MAX)
 		throw Exceptions::OverflowException();
 	else if (num > 0 && num < DBL_MIN)
 		throw Exceptions::UnderflowException();
 	else
-		return new Operand<double>(static_cast<double>(num), Double, std::string(val));
+		return new Operand<double>(static_cast<double>(num), eOperandType::Double);
 }
